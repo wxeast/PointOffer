@@ -1,0 +1,67 @@
+#pragma once
+//剑指offer 面试题21
+//包含min函数的栈
+//题目就是  ：
+//定义栈的数据结构 ，，，在栈中实现一个能够实现得到栈的最小元素的min函数  。
+//在这个栈中 ，，，push ，，pop、、、min的时间复杂度 都是 O(1);
+#include<vector>
+
+template<class T>
+class Stack
+{
+public:
+	Stack()
+	{}
+	//插入时，，，，处理辅助栈，，，保持最顶端的位置始终是最小值 
+	void push(const  T&  data)
+	{
+		_a.push_back(data);//尾插数据到数据栈
+		if(!_min.empty())//处理辅助栈
+		{
+			//要是 插入的元素，，，比 当前的最小值小，，，，说明最小值 变了 ，，，
+			if(data <= _min[_min.size()-1])
+			{
+				_min.push_back(data);//将此元素作为是 最小值放到辅助栈中  
+			}
+			//否则  将原来的数继续放到顶端，，，， 
+			else
+			{
+				_min.push_back(_min[_min.size()-1]);//保存原最小值 
+			}
+		}
+		else
+		{
+			_min.push_back(data);
+		}
+	}
+
+	void pop()
+	{
+		_a.pop_back();
+		_min.pop_back();
+	}
+	T& min()
+	{
+		return   _min[_min.size()-1];
+	}
+	T& top()
+	{
+		return _a[_a.size()-1];
+	}
+protected:
+	vector<T> _a;//数据保存
+	vector<T> _min;//保存的是最小元素 
+};
+
+
+
+void  Test21th()
+{
+	Stack<int> s;
+	s.push(3);
+	s.push(4);
+	s.push(2);
+	s.push(1);
+	s.push(0);
+
+}
