@@ -1,0 +1,79 @@
+#pragma once 
+
+//剑指offer面试题4：替换空格
+// 题目 ：实现一个函数，把一个字符串中的空格全部 替换成%20
+// 假如，该字符串为 " we are happy." 则它的输出为" we%20are%20happy."
+
+
+//方法一 ：死方法 遇到一个空格就把空格后面的字符向后移，，，知道结束；
+//str表示的字符串，，，n表示的就是数组 长度  
+
+//假设数组的长度足够长
+void ReplaceBlank(char *  src,const size_t n)
+{
+	assert(src);//先断言  。预防是个空串
+	int length  = strlen(src);//表示的是字符串的实际长度 算上/0
+	char  *str = src;
+	while(*str)
+	{
+		if(*str == ' ')
+		{
+			//遇到一个空格之后 ，，，先将空格之后的字符向后移两位
+			assert(n >=(length+3));//如果要是空间不够用的话
+			char* tmp  = src + length;
+			while(str != tmp)
+			{
+				*(tmp +2) = *tmp;
+				tmp--;
+			}
+			*str  ='%';
+			*(++str) = '2';
+			*(++str) ='0';
+			length = strlen(src);
+		}
+		++str;
+	}
+}
+
+//上述方法理解起来简单，但是时间复杂度太大了
+//相当于每次遇到一个空格就要把字符串向后移上两位(也就是要遍历一边数组)时间复杂度为O（N*N）
+//方法2：我们可以先遍历一遍字符串，判断总共有几个空格，，就可以直接的得到移动的位数
+//此方法的时间复杂度为 O(1),,因为只遍历了一遍并且移动了一次
+
+void ReplaceBlankS(char *  src,const size_t n)
+{
+	assert(src);//同样的先断言，，，判断字符串势是不是空串
+	char *  str   = src;
+	int  count  = 0;//表示的是空格的个数
+	while(*str)
+	{
+		if(*(str++)==' ')
+		{
+			count++;
+		}
+	}
+	assert((strlen(src)+count*2)+1 <= n)//断言数组要足够长
+	//此时的str表示的是/0,,,也就是最后一个字符
+	//从后往前来判断，
+	while(str !=src)
+	{
+		if(*str != ' ')
+		{
+			*(str + 2*count) = *str;
+		}
+		else
+		{
+			*(str + 2*count)  ='0';
+			*(str + 2*count - 1) = '2';
+			*(str + 2*count - 2) = '%';
+			count--;//遇到一个空格之后 ，，那么前面的空格就会减少 ，，，移动的位数就会减少
+		}
+		str--;
+	}
+}
+void test()
+{
+	char str[100] = {'w','e',' ','a','r','e',' ','h','a','p','p','y'};
+	ReplaceBlankS(str,100);
+	cout<<str<<endl;
+}
