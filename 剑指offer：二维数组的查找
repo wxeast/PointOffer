@@ -1,0 +1,43 @@
+#pragma  once
+//面试题3、二维数组的查找
+//题目：在一个二维数组中  ，，，每行的数都按照的是从左到右递增的顺序，
+//每一列的数都按照的是  从上到下递增的顺序的排序，，，请完成一个函数 ；
+//输入 的是 一个 整数和二维数组、、、判断数组中是否含有这个整数
+#include<assert.h>
+
+bool Find(int * matrix,int rows,int cols ,int number)
+{
+	assert(matrix && rows >0 && cols >0);
+
+	int row = 0;
+	int col = cols -1;
+	//从右上方来开始判断
+	while(row < rows && col>= 0)
+	{
+		//找到的话，返回的是 true
+		if(matrix[row * cols + col]  == number)
+		{
+			return  true;
+		}
+		//要是这个值比要找的值大的话  只能从左边来找
+		else if(matrix[row* cols + col] > number )
+		{
+			--col;
+		}
+		//要是这个值小于要找的值  ，，，，那么必须要从下面来找
+		else
+		{
+			++row;
+		}
+	}
+
+
+
+
+}
+
+void   Testthree()
+{
+	int array[4][4] ={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
+	cout<<Find((int *)array,4,4,7)<<endl;
+}
