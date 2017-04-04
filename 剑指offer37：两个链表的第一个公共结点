@@ -1,0 +1,126 @@
+#pragma  once
+//剑指offer面试题  37 ：得到两个单链表的第一个公共节点
+//题目：输入两个链表 找出他们的第一个相遇节点
+
+//链表节点的定义 
+struct ListNode
+{
+	int _data;
+	ListNode*  _next;
+};
+
+
+
+//方法1 死方法  直接遍历两个链表 ，，，，这样的做法的时间复杂度为O（M*N）
+
+ListNode*  GetMeetNode1(ListNode* head1,ListNode* head2)
+{
+	ListNode *  cur1 =head1;
+	while(cur1)//遍历链表1
+	{
+		ListNode* cur2 = head2;//顺序遍历链表2
+		while(cur2)
+		{
+			if(cur1 == cur2)//要是两个节点相同，，表示就是第一个相遇节点
+			{
+				return  cur1;
+			}
+			cur2  =cur2->_next;
+		}
+		cur1= cur1->_next;
+	}
+	return NULL;//表示的是两个链表没有相遇节点
+}
+
+//方法2：  两个链表的相交有两种的方式
+//1、Y型相交
+//2、V型相交
+//我们可以看到这两种情况 都有一个共同点：他们两个的尾节点重合
+//我们只要从后往前两遍历  最后一个相同的节点就是他们的相遇节点
+//时间复杂度的最坏的情况为O（M+N+N）
+//但是空间复杂度有点大
+#include<stack>
+ListNode*  GetMeetNode2(ListNode* head1,ListNode* head2)
+{
+	ListNode *  cur1 = head1;
+	ListNode *  cur2 = head2; 
+	
+	//若要从后往前来判断 ，，，就是一种后进先出的想法；；；使用栈
+
+	stack<ListNode*> s1;//用来保存两个链表的值
+	stack<ListNode*> s2;
+	while(cur1)//存储链表1
+	{
+		s1.push(cur1);
+		cur1= cur1 ->_next;
+	}
+	while(cur2)//存储链表2
+	{
+		s2.push(cur2);
+		cur2= cur2 ->_next;
+	}
+	cur1 =  s1.top();
+	cur2 =  s2.top();
+	s1.pop();
+	s2.pop();
+	if(cur1 != cur2)//表示的是 他们没有相遇节点
+		return NULL;//表示的是两个链表没有相遇节点
+
+	while(cur1 == cur2)
+	{
+		if(!s1.empty() || !s2.empty())//表示的是  链表1结束或者链表2结束
+			return cur1;
+		cur1 = s1.top();
+		cur2 = s2.top();
+		s1.pop();
+		s2.pop();
+	}
+	//走到这里cur1 表示的是最后一个不想同的节点
+	return   cur1->_next;
+}
+
+
+
+//方法三：上面的两种情况  不是时间复杂度太高，，就是空间复杂度太大
+//所以我们想出了第三种情况
+//先得到两个链表的长度
+int  GetListSize(ListNode* head)
+{
+	int count = 0 ;
+	while(head)
+	{
+		head = head->_next;
+		count++;
+	}
+	return  count;
+}
+
+
+ListNode*  GetMeetNode3(ListNode* head1,ListNode* head2)
+{
+	//先得到两个链表的长度
+	int size1 = GetListSize(head1);
+	int size2 = GetListSize(head2);
+	ListNode*  longNode  = head1;
+	ListNode*  shortNode = head2;
+	int n = size1- size2;
+	if(size1 < size2)
+	{
+		n = size2 -size1;
+		longNode  =head2;
+		shortNode  =head1;
+	}
+	for(int  i = 0 ;i < n;++i)
+	{
+		shortNode  = shortNode ->_next;
+	}
+	while(shortNode && longNode &&shortNode!= longNode)
+	{
+		shortNode = shortNode->_next;
+		longNode = longNode->_next;
+	}
+	
+	return shortNode;
+
+
+}
