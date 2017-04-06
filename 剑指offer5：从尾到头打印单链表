@@ -1,0 +1,45 @@
+#pragma  once
+//面试题 5：从尾到头打印链表
+//题目：输入一个链表的头结点，从尾到头打印链表。。。
+
+
+struct  ListNode
+{
+	int _data;
+	ListNode* _next;
+};
+
+
+#include<stack>
+//方法一：使用栈先打印后添加的元素
+
+//void  PrintListR(ListNode*  head)
+//{
+//	stack<ListNode*> data; 
+//	ListNode*  cur = head;
+//	while(cur)
+//	{
+//		data.push(cur);
+//		cur =cur->_next;
+//	}
+//	while(!data.empty())
+//	{
+//		cur = data.top();
+//		cout<<cur->_data<<" ";
+//		data.pop();
+//	}
+//	cout<<endl;
+//}
+
+
+//方法二：既然可以使用栈，，，那么使用递归也是可以的
+
+
+void  PrintListR(ListNode* cur)
+{
+	if(cur&&cur->_next)
+	{
+		PrintListR(cur->_next);
+	}
+	cout<<cur->_data<<" ";
+}
