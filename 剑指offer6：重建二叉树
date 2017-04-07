@@ -1,0 +1,63 @@
+#pragma  once
+
+//面试题 6 ：重建二叉树 
+//输入二叉树的前序和中序遍历结果，请重建出该二叉树。假设输入的前序 遍历
+//和后序遍历的结果都不含有重复的数字。
+//前序遍历  {1，2，4，7，3，5，6，8}
+//后序遍历  {4，7，2，1，5，3，8，6}
+//重建二叉树
+
+struct  BinaryTreeNode
+{
+	int _data;
+	BinaryTreeNode*  _left;
+	BinaryTreeNode*  _right;
+	BinaryTreeNode(const  int data)
+		:_data(data)
+		,_left(NULL)
+		,_right(NULL)
+	{}
+};
+
+
+//
+
+typedef  BinaryTreeNode  Node;
+
+//[ Prefirst,Prelast]
+Node* _CreateNewTree(int* Prefirst,int * Prelast,int*  Infirst,int *Inlast)
+{
+	if(Prefirst==Prelast )
+		return new Node(*Prefirst);
+	int value = *Prefirst;
+	Node * node= new Node(value);
+	int * first = Infirst;
+	int * last = Inlast;
+	for(; first<= last;++first)
+	{
+		if(*first == value)
+			break;
+	}
+	if(first > last)
+		assert(false);
+	int  n = first - Infirst;
+	if(first != Infirst)
+		node->_left = _CreateNewTree(Prefirst+1,Prefirst+n,Infirst,first-1);
+	if(first != Inlast)
+		node->_right = _CreateNewTree(Prefirst+ n+1,Prelast,first+1,Inlast);
+	return  node;
+}
+Node*  CreateNewTree(int *  Pre,int * In,int length)
+{
+	assert(Pre&&In);
+	assert(length);
+	return  _CreateNewTree(Pre,Pre+length-1,In,In+length-1);
+}
+
+
+void Test6th()
+{
+	int preorder[] = {1,2,4,7,3,5,6,8};
+	int inorder[]  = {4,7,2,1,5,3,8,6};
+	Node*  root  = CreateNewTree(preorder,inorder,8);
+}
