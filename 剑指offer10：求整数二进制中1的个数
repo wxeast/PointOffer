@@ -1,0 +1,73 @@
+#pragma once
+
+
+//面试10：二进制中 1的个数
+//题目：实现一个函数，输入一个整数，输出该整数二进制表示中1的个数
+//，例如   9的二进制中 表示成二进制就是1001 ，有两个1；
+
+
+//缺陷使用的是负数的话 ，会陷入死循环 
+int GetOneCount(int  n)
+{
+	int  count = 0;
+	while(n)
+	{
+		if(n&1)
+			count++;
+		n  >>= 1;
+	}
+	return  count;
+}
+
+
+
+int GetOneCount1(int n)
+{
+	int count  = 0 ;
+	for(int i = 0 ;i < 32;++i)
+	{
+		if(n & (1<<i))
+			count++;
+	}
+	return  count;
+}
+
+//使用的是位运算的方法
+int GetOneCount2(int n)
+{
+	int count  = 0 ;
+	while(n)
+	{
+		n = n&(n-1);
+		count++;
+	}
+	return count;
+}
+
+//拓展   得到 0的个数 
+int GetZeroCount(int n)
+{
+	int ret = 0; 
+	//   1000  8
+	//   1001  9
+	//   1010  10
+	//   1011  11
+	//   1100
+	//   1111   15
+	//   10000   11111 
+	while(n+1)  
+	{  
+		n = n |(n+1);  
+		ret++;  
+	}  
+	return ret;  
+}
+
+void Test10th()
+{
+	int ret  =GetOneCount(8);
+	int ret1 = GetOneCount1(-2);
+	int ret2 = GetOneCount2(-1);
+	int ret3 = GetZeroCount(-1);
+
+}
