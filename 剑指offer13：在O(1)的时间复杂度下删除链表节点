@@ -1,0 +1,43 @@
+#pragma once
+
+
+//面试13：在o(1)的时间复杂度下，删除链表的节点。
+//题目 ：给定单向链表的头 指针和一个节点的指针。定义一个函数来
+//在o(1)的时间复杂度下，删除该节点。。。
+//链表的定义：
+struct  ListNode
+{
+	int _value;
+	ListNode* _next;
+};
+
+void DeleteNode(ListNode**  head,ListNode*  del)
+{
+	if(!head || !del)
+		return  ;
+	if(del->_next)//删除的节点不是尾节点的话
+	{
+		ListNode *  next = del->_next;
+		del->_value = next->_value;
+		del->_next = next->_next;
+		delete del->_next;
+	}
+	//当前链表只有一个节点的话
+	else if(*head == del)
+	{
+		delete del;
+		*head= NULL;
+		del = NULL;
+	}
+	//要删除的节点就是尾节点
+	else
+	{
+		//老老实实的找到删除节点的前一个指针
+
+		//删除要删除的节点之后，，正确的链接
+	}
+
+
+
+
+}
