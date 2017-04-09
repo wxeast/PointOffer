@@ -1,0 +1,33 @@
+#pragma once
+
+
+//面试11：
+//题目：实现函数 double Power(double base,int exponent),求base的exponent次方。
+//不得使用库函数，同时不需要考虑大数问题  。。
+
+
+
+double Power(double base,int exponent)
+{
+	if(base == 0)
+		return   0;
+	double ret  = 1;
+	//int num  = abs(exponent);//使用的是库函数 
+	//自己写的话 
+	int  num   = exponent;
+	if(num < 0)
+		num = -num;
+	for(int i =0  ;i < num ;++i)
+	{
+		ret  *= base;
+	}
+	if(exponent < 0)
+	{
+		ret   = 1/ret;
+	}
+	return  ret;
+}
+void Test11th()
+{
+	double ret  = Power(2,-2);
+}
