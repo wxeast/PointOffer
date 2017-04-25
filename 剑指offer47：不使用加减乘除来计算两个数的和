@@ -1,0 +1,29 @@
+#pragma once
+
+//面试题：47 不使用四则运算的话 ，来得到两个数 的整数和
+
+
+
+//使用的是 位运算
+
+int GetAddTwo(int num1,int num2)
+{
+	//得到两个数的进位值
+	int carry = (num1 & num2)<<1;
+	//两数相加的值 （不算上进位）
+	int add  = num1^ num2;
+	//当什么时候进位为 0，，，表示的就是add就是 相加后的最终值
+	while(carry)
+	{
+		num1 = carry;
+		num2 = add;
+		carry = (num1 & num2)<<1;
+		add  = num1 ^ num2;
+	}
+	return  add;
+}
+
+void Test47()
+{
+	int ret  =GetAddTwo(1,3);
+}
