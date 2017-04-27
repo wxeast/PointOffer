@@ -1,0 +1,102 @@
+#pragma once
+struct  ListNode
+{
+	int val;
+	ListNode* next;
+	ListNode(int x)
+		:val(x),next(NULL)
+	{}
+};
+
+
+//可能的出现的几种情况
+// 1、{1 2 3 3 4 4 5}
+// 2、{1 1 1 1 1 1 1}
+// 3、{1 2 3 4 5 6 6}
+// 4、{1 1 2 3 4 5 5}
+// 【left,right)
+void DelListNode(ListNode* left,ListNode*  right)
+{
+	//将这段结点删除
+	while(left!=right)
+	{
+		ListNode*  del = left;
+		left =left->next;
+		delete del;
+	}
+}
+ListNode* deleteDuplication(ListNode* pHead)
+{
+	if(pHead == NULL)
+		return NULL;
+	ListNode*  cur = pHead;//表示前一个数
+	ListNode* fast = pHead->next;//表示的是后一个数
+	if(fast == NULL)
+		return cur;
+	ListNode* prev = NULL;//表示的删除的前一个结点
+	ListNode* ret = NULL;//表示返回的结点
+	while(fast)
+	{
+		//在这块表示的是找到了两个相等的了
+		if(cur->next == fast&&cur->val == fast->val)
+		{
+			while(fast&&fast->val ==cur->val)
+			{
+				fast = fast->next;
+			}
+			DelListNode(cur,fast);
+			cur =fast;
+			if((cur == NULL)||(cur&&cur->next== NULL))
+			{
+				if(prev == NULL)
+				{
+					prev = cur;
+					ret = cur;
+				}
+				else
+				{
+					prev->next = cur;
+				}
+				return ret;
+			}
+			fast =fast->next;
+		}
+		else
+		{
+			if(prev == NULL)
+			{
+				prev = cur;
+				ret = cur;
+			}
+			else
+			{
+				prev->next = cur;
+				prev = cur;
+			}
+			cur = cur->next;
+			fast = cur->next;
+			
+		}
+	}
+	return ret;
+}
+
+void Test57()
+{
+	ListNode*   h1= new ListNode(1);
+	ListNode*   h2= new ListNode(2);
+	ListNode*   h3= new ListNode(3);
+	ListNode*   h4= new ListNode(3);
+	ListNode*   h5= new ListNode(4);
+	ListNode*   h6= new ListNode(4);
+	ListNode*   h7= new ListNode(5);
+	h1->next = h2;
+	h2->next = h3;
+	h3->next = h4;
+	h4->next = h5;
+	h5->next = h6;
+	h6->next = h7;
+	ListNode* ret = deleteDuplication(h1);
+
+
+}
